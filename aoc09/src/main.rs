@@ -41,12 +41,16 @@ impl From<&'static str> for Input {
     }
 }
 
-#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, Hash)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 struct Knot {
     coord: (i32, i32),
 }
 
 impl Knot {
+    fn new() -> Self {
+        Self { coord: (0, 0) }
+    }
+
     fn step(&mut self, step: Step) {
         match step {
             Step::Left => self.coord.0 -= 1,
@@ -77,8 +81,8 @@ impl Knot {
 
 fn simulate_knots(steps: &[(Step, i32)], num: usize) -> usize {
     let mut tail_visit: HashSet<Knot> = HashSet::new();
-    let mut knots: Vec<Knot> = vec![Knot::default(); num];
-    tail_visit.insert(Knot::default());
+    let mut knots: Vec<Knot> = vec![Knot::new(); num];
+    tail_visit.insert(Knot::new());
     for &(step, len) in steps {
         for _ in 0..len {
             knots[0].step(step);
