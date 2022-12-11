@@ -3,6 +3,14 @@
 version = 3
 
 [[package]]
+name = "aoc01"
+version = "0.1.0"
+
+[[package]]
+name = "aoc02"
+version = "0.1.0"
+
+[[package]]
 name = "aoc03"
 version = "0.1.0"
 
@@ -46,6 +54,58 @@ dependencies = [
 
 [[package]]
 name = "aoc12"
+version = "0.1.0"
+
+[[package]]
+name = "aoc13"
+version = "0.1.0"
+
+[[package]]
+name = "aoc14"
+version = "0.1.0"
+
+[[package]]
+name = "aoc15"
+version = "0.1.0"
+
+[[package]]
+name = "aoc16"
+version = "0.1.0"
+
+[[package]]
+name = "aoc17"
+version = "0.1.0"
+
+[[package]]
+name = "aoc18"
+version = "0.1.0"
+
+[[package]]
+name = "aoc19"
+version = "0.1.0"
+
+[[package]]
+name = "aoc20"
+version = "0.1.0"
+
+[[package]]
+name = "aoc21"
+version = "0.1.0"
+
+[[package]]
+name = "aoc22"
+version = "0.1.0"
+
+[[package]]
+name = "aoc23"
+version = "0.1.0"
+
+[[package]]
+name = "aoc24"
+version = "0.1.0"
+
+[[package]]
+name = "aoc25"
 version = "0.1.0"
 
 [[package]]
