@@ -8,10 +8,10 @@
             "name": "(gdb) Rust",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceRoot}/target/debug/aoc11",
+            "program": "${workspaceRoot}/target/debug/aoc${input:day}",
             "args": [],
             "cwd": "${workspaceRoot}",
-            "stopOnEntry": true
+            "stopOnEntry": false
         }
     ],
     "inputs": [
@@ -19,7 +19,33 @@
             "id": "day",
             "type": "pickString",
             "description": "select AOC day",
-            "options": []
+            "options": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "22",
+                "23",
+                "24",
+                "25"
+            ]
         }
     ]
 }
