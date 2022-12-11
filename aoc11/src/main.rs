@@ -2,22 +2,22 @@ use dyn_clone::DynClone;
 use std::fmt::Display;
 
 trait Operation: DynClone {
-    fn call(&self, x: u32) -> u32;
+    fn call(&self, x: usize) -> usize;
 }
 
 impl<F> Operation for F
 where
-    F: Fn(u32) -> u32 + Clone,
+    F: Fn(usize) -> usize + Clone,
 {
-    fn call(&self, x: u32) -> u32 {
+    fn call(&self, x: usize) -> usize {
         self(x)
     }
 }
 
 struct Monkey {
-    items: Vec<u32>,
+    items: Vec<usize>,
     operation: Box<dyn Operation>,
-    divisible: u32,
+    divisible: usize,
     true_monkey: usize,
     false_monkey: usize,
     num_inspections: usize,
@@ -60,15 +60,15 @@ impl From<&str> for Monkey {
             let rhs = tokens[2];
             assert_eq!(lhs, "old");
             match (op, rhs) {
-                ("*", "old") => Box::new(|x: u32| x * x),
-                ("+", "old") => Box::new(|x: u32| x + x),
+                ("*", "old") => Box::new(|x: usize| x * x),
+                ("+", "old") => Box::new(|x: usize| x + x),
                 ("*", rhs) => {
-                    let rhs: u32 = rhs.parse().unwrap();
-                    Box::new(move |x: u32| x * rhs)
+                    let rhs: usize = rhs.parse().unwrap();
+                    Box::new(move |x: usize| x * rhs)
                 }
                 ("+", rhs) => {
-                    let rhs: u32 = rhs.parse().unwrap();
-                    Box::new(move |x: u32| x + rhs)
+                    let rhs: usize = rhs.parse().unwrap();
+                    Box::new(move |x: usize| x + rhs)
                 }
                 _ => unreachable!(),
             }
@@ -110,14 +110,17 @@ impl From<&str> for Monkey {
 }
 
 impl Monkey {
-    fn work(&mut self) -> ((usize, Vec<u32>), (usize, Vec<u32>)) {
+    fn work(
+        &mut self,
+        manage: impl Fn(usize) -> usize,
+    ) -> ((usize, Vec<usize>), (usize, Vec<usize>)) {
         self.num_inspections += self.items.len();
         let mut true_items = Vec::new();
         let mut false_items = Vec::new();
         for item in &self.items {
-            let worry = self.operation.call(*item);
+            let worry = manage(self.operation.call(*item));
             if worry % self.divisible == 0 {
-                true_items.push(worry / self.divisible);
+                true_items.push(worry);
             } else {
                 false_items.push(worry);
             }
@@ -129,7 +132,7 @@ impl Monkey {
         )
     }
 
-    fn give(&mut self, items: &[u32]) {
+    fn give(&mut self, items: &[usize]) {
         self.items.extend(items);
     }
 
@@ -150,27 +153,15 @@ impl From<&'static str> for Input {
     }
 }
 
-fn part1(input: &Input) -> impl Display {
-    let mut monkeys = input.monkeys.clone();
-    for _round in 0..20 {
-        for i in 0..input.monkeys.len() {
-            let ((monkey0, items0), (monkey1, items1)) = monkeys[i].work();
+fn monkey_business(monkeys: &Vec<Monkey>, rounds: usize, manage: impl Fn(usize) -> usize) -> usize {
+    let mut monkeys = monkeys.clone();
+    for _round in 0..rounds {
+        for i in 0..monkeys.len() {
+            let ((monkey0, items0), (monkey1, items1)) = monkeys[i].work(&manage);
 
             monkeys[monkey0].give(items0.as_slice());
             monkeys[monkey1].give(items1.as_slice());
         }
-        println!(
-            "After round {}, the monkeys are holding items with these worry levels:",
-            _round
-        );
-        for (ind, monkey) in monkeys.iter().enumerate() {
-            print!("Monkey {}: ", ind);
-            for item in &monkey.items {
-                print!("{}, ", item);
-            }
-            print!("\n");
-        }
-        println!("");
     }
 
     let mut monkeys: Vec<_> = monkeys
@@ -182,9 +173,17 @@ fn part1(input: &Input) -> impl Display {
     monkeys[0] * monkeys[1]
 }
 
+fn part1(input: &Input) -> impl Display {
+    monkey_business(&input.monkeys, 20, |x| x / 3)
+}
+
 fn part2(input: &Input) -> impl Display {
-    todo!();
-    0
+    let gcd = input
+        .monkeys
+        .iter()
+        .map(|monkey| monkey.divisible)
+        .fold(1, |acc, x| acc * x);
+    monkey_business(&input.monkeys, 10_000, |x| x % gcd)
 }
 
 fn main() {

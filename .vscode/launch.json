@@ -8,9 +8,10 @@
             "name": "(gdb) Rust",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceRoot}/target/debug/aoc${input:day}.exe",
+            "program": "${workspaceRoot}/target/debug/aoc11",
             "args": [],
             "cwd": "${workspaceRoot}",
+            "stopOnEntry": true
         }
     ],
     "inputs": [

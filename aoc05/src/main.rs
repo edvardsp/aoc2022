@@ -70,19 +70,19 @@ fn part1(input: &Input) -> String {
 
 fn part2(input: &Input) -> String {
     input
-    .moves
-    .iter()
-    .fold(input.stacks.clone(), |mut stacks, m| {
-        let from = &mut stacks[m.from];
-        let tail: Vec<_> = from.iter().copied().skip(from.len() - m.num).collect();
-        from.resize(from.len() - m.num, 0);
-        let to = &mut stacks[m.to];
-        to.extend(tail);
-        stacks
-    })
-    .into_iter()
-    .map(|stack| *stack.last().unwrap() as char)
-    .collect()
+        .moves
+        .iter()
+        .fold(input.stacks.clone(), |mut stacks, m| {
+            let from = &mut stacks[m.from];
+            let tail: Vec<_> = from.iter().copied().skip(from.len() - m.num).collect();
+            from.resize(from.len() - m.num, 0);
+            let to = &mut stacks[m.to];
+            to.extend(tail);
+            stacks
+        })
+        .into_iter()
+        .map(|stack| *stack.last().unwrap() as char)
+        .collect()
 }
 
 fn main() {
