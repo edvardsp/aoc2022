@@ -55,6 +55,9 @@ dependencies = [
 [[package]]
 name = "aoc12"
 version = "0.1.0"
+dependencies = [
+ "ndarray",
+]
 
 [[package]]
 name = "aoc13"
